@@ -19,7 +19,7 @@
 //                  returned by the getCredentialsParamsNames() below
 var ScriptVars = Java.type('org.zaproxy.zap.extension.script.ScriptVars');
 
-function obtainKeycloakToken() {
+function obtainKeycloakToken(paramsValues) {
 
     var HttpRequestHeader = Java.type("org.parosproxy.paros.network.HttpRequestHeader");
     var HttpHeader = Java.type("org.parosproxy.paros.network.HttpHeader");
@@ -47,15 +47,11 @@ function obtainKeycloakToken() {
 }
 
 function authenticate(helper, paramsValues, credentials) {
-    print("Authenticating via JavaScript script...");
-
-    var token = ScriptVars.getGlobalVar('keycloak.token1');
-
-    if (!token) {
+ 
         var msg1 = helper.prepareMessage();
-        token = obtainKeycloakToken();
+        token = obtainKeycloakToken(paramsValues);
         ScriptVars.setGlobalVar('keycloak.token1', token);
-    }
+   
 
     var requestUri = new URI(helper.getURI());
     var msg = helper.prepareMessage();
